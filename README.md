@@ -9,7 +9,7 @@ npm install
 ## Start server
 
 ```shell
-npm run serve-json
+npm run server
 ```
 
 ## Start client

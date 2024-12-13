@@ -1,16 +1,13 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Drawer from '@mui/material/Drawer';
-import { User } from '../types';
 import AddEditUserForm from './AddEditUserForm';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
+import { User } from '../types';
 
-interface AddEditUserDrawerProps {
-    isOpen: boolean;
-    user: User;
-    setSelectedUser: Function
-};
-
-const AddEditUserDrawer = ({ isOpen, user, setSelectedUser }: AddEditUserDrawerProps) => {
-    const [open, setOpen] = useState(isOpen);
+const AddEditUserDrawer = () => {
+    const [open, setOpen] = useState(false);
+    const selectedUser = useSelector((state: RootState) => state.user.selectedUser);
 
     const toggleDrawer = useCallback((_: string, open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
         if (
@@ -23,8 +20,11 @@ const AddEditUserDrawer = ({ isOpen, user, setSelectedUser }: AddEditUserDrawerP
         }
 
         setOpen(open);
-        if (!open) setSelectedUser(null);
     }, []);
+
+    useEffect(() => {
+        setOpen(!!selectedUser);
+    }, [selectedUser]);
 
     return (
         <Drawer
@@ -32,9 +32,9 @@ const AddEditUserDrawer = ({ isOpen, user, setSelectedUser }: AddEditUserDrawerP
             open={open}
             onClose={toggleDrawer("right", false)}
         >
-            <AddEditUserForm user={user} />
+            <AddEditUserForm user={{...selectedUser as User}} setOpen={setOpen} />
         </Drawer>
     )
-}
+};
 
 export default AddEditUserDrawer

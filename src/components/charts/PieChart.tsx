@@ -1,32 +1,34 @@
-import Box from '@mui/material/Box';
-import { PieChart as MuiPieChart } from '@mui/x-charts/PieChart';
+import Box from "@mui/material/Box";
+import { PieChart as MuiPieChart } from "@mui/x-charts/PieChart";
 
 interface PieChartProps {
-    data: { value: number; label: string }[];
+  data: { value: number; label: string }[] | undefined;
 }
 
-export default function PieChart({ data }: PieChartProps) {
+const PieChart = ({ data }: PieChartProps) => {
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box>
       <MuiPieChart
         height={300}
         series={[
           {
             data,
             innerRadius: 50,
-            arcLabel: (params) => params.label ?? '',
+            arcLabel: (params) => params.label ?? "",
             arcLabelMinAngle: 20,
           },
         ]}
         slotProps={{
-            legend: {
-              direction: 'row',
-              position: { vertical: 'top', horizontal: 'middle' },
-              padding: 0,
-              hidden: true,
-            },
+          legend: {
+            direction: "row",
+            position: { vertical: "top", horizontal: "middle" },
+            padding: 0,
+            hidden: true,
+          },
         }}
       />
     </Box>
   );
-}
+};
+
+export default PieChart;
