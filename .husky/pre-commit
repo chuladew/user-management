@@ -1,0 +1,15 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo -e '\e[1;34mRunning code quality standards and styling check before committing...\e[0m'
+# Check ESLint Standards
+npx lint-staged ||
+(
+  echo -e '
+  \e[1;31mESLint Check Failed!
+  Make the required changes listed above, add changes and try to commit again.\e[0m'
+  false; 
+)
+
+# If everything passes... Now can commit
+echo -e '\e[1;32m✅✅✅✅ Code looks good. Committing now. ✅✅✅✅\e[0m'
