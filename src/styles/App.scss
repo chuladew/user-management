@@ -1,0 +1,89 @@
+.app-container {
+  width: 100%;
+  padding: 0 !important;
+  margin: 0 !important;
+
+  .side-bar-menu-wrapper {
+    background-color: "background.paper";
+  }
+
+  .app-header-container {
+    width: auto;
+    padding: 2rem 0rem;
+    justify-content: space-between;
+
+    .color-theme-selector {
+      vertical-align: bottom;
+      display: inline-flex;
+      width: 2.25rem;
+      height: 2.25rem;
+      border: 1px solid;
+    }
+  }
+
+  .user-page-container {
+    width: 100%;
+    margin-top: 3rem;
+
+    .user-page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+
+      .header-title {
+        margin-bottom: 1rem;
+      }
+    }
+
+    .data-table-action-menu-container {
+      display: flex;
+      justify-content: center;
+    }
+
+    .data-table-container {
+      width: 10rem;
+    }
+  }
+
+  .analytics-page-header {
+    width: 100%;
+
+    .analytics-page-header-content {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin-bottom: 2rem;
+      margin-top: 2rem;
+    }
+
+    .group-by-key-select {
+      width: 10rem;
+      margin-left: 1rem;
+    }
+  }
+
+  .loading-spinner-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+}
+
+.add-edit-user-form-container {
+  position: relative;
+  width: 30rem;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: flex-start;
+
+  .user-form-actions-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+}
