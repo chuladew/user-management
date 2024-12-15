@@ -1,7 +1,5 @@
 .app-container {
   width: 100%;
-  padding: 0 !important;
-  margin: 0 !important;
 
   .side-bar-menu-wrapper {
     background-color: "background.paper";
@@ -23,7 +21,7 @@
 
   .user-page-container {
     width: 100%;
-    margin-top: 3rem;
+    margin-top: 5rem;
 
     .user-page-header {
       display: flex;
@@ -53,7 +51,11 @@
       align-items: center;
       justify-content: flex-start;
       margin-bottom: 2rem;
-      margin-top: 2rem;
+      margin-top: 7rem;
+
+      #group-by-key-label {
+        left: 1rem;
+      }
     }
 
     .group-by-key-select {

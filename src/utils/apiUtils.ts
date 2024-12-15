@@ -28,13 +28,17 @@ export const getStringifiedColumnFilters = (
   return customFilters.reduce(
     (acc, opt) => {
       const columnDef = columnDefs[opt.id][0];
-      if (columnDef.filterFn === "between") {
+      if (columnDef.filterVariant === "range-slider") {
         const [start, end] = opt.value as [number, number];
         if (!start || !end) return acc;
         acc[`${opt.id}_gte`] = start;
         acc[`${opt.id}_lte`] = end;
       } else {
-        acc[`${opt.id}_like`] = opt.value;
+        if (columnDef.filterVariant === "select") {
+          acc[`${opt.id}`] = opt.value;
+        } else {
+          acc[`${opt.id}_like`] = opt.value;
+        }
       }
       return acc;
     },
@@ -62,3 +66,11 @@ export const getUrl = (queryParams: QueryParams) => {
   });
   return { url: `/users?${queryStr}` };
 };
+
+export const populateTags = (result: any, type: string) =>
+  result?.ids?.length
+    ? [
+        ...result.ids.map((id: number) => ({ type, id })),
+        { type, id: "PARTIAL-LIST" },
+      ]
+    : [{ type, id: "PARTIAL-LIST" }];

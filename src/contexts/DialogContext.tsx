@@ -1,16 +1,16 @@
-import { createContext, ReactNode, SetStateAction } from "react";
+import { createContext, ReactNode } from "react";
 
 interface DialogOptions {
   open: boolean;
   title: string;
   message: string;
-  btns: {
-    label: string;
-    onClick: Function;
-  }[];
+  btns:
+    | {
+        label: string;
+        onClick: Function;
+      }[]
+    | [];
 }
-
-// type SetDialogOptionsType = Dispatch<SetStateAction<DialogOptions>>;
 
 interface DialogContextProps {
   children?: ReactNode;

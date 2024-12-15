@@ -1,4 +1,3 @@
-// const fs = require("fs");
 import fs from "fs";
 
 fs.readFile("./data/MOCK_DATA.json", function (err, data) {

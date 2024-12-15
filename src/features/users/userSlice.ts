@@ -7,7 +7,7 @@ interface UserSliceType {
   selectedUser: SelectedUser;
 }
 
-const initialState = { selectedUser: null } as UserSliceType;
+export const initialState = { selectedUser: null } as UserSliceType;
 
 const userSlice = createSlice({
   name: "user",

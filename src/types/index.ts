@@ -18,11 +18,12 @@ export interface columnDefType {
     | "time-range"
     | undefined;
   sortable: boolean;
-  numeric: boolean;
+  numeric?: boolean;
   size?: number;
   filterFn?: string;
   filterSelectOptions?: any[];
   enableColumnFilter?: boolean;
+  muiFilterSliderProps?: any;
 }
 
 export type DataRange = {

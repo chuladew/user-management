@@ -14,6 +14,7 @@ import {
 } from "material-react-table";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { isArray } from "lodash";
 import { columnDefType, QueryParams, User } from "../types";
 import {
   selectAllUsers,
@@ -54,6 +55,18 @@ const DataTable = () => {
     []
   );
 
+  const getValidFilters = useCallback(
+    (columnFilters: MRT_ColumnFiltersState) => {
+      if (!columnFilters?.length) return [];
+      return columnFilters.filter((filter) => {
+        return filter?.id && isArray(filter.value)
+          ? filter.value[0] != undefined
+          : filter.value != undefined;
+      });
+    },
+    [columnFilters]
+  );
+
   useEffect(() => {
     setRowCount(data?.pagination?.totalCount ?? 0);
     setQueryParams({
@@ -61,7 +74,7 @@ const DataTable = () => {
       limit: pagination.pageSize ?? defaultPageSize,
       query: globalFilter,
       sorting,
-      columnFilters,
+      columnFilters: getValidFilters(columnFilters),
     });
   }, [data, pagination, columnFilters, globalFilter, sorting]);
 
@@ -96,7 +109,7 @@ const DataTable = () => {
     manualPagination: true,
     manualSorting: true,
     enableRowActions: true,
-    enableFacetedValues: true,
+    // enableFacetedValues: true,
     enableRowVirtualization: true,
     positionActionsColumn: "last",
     columnFilterDisplayMode: "popover",

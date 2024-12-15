@@ -1,11 +1,12 @@
 import { createEntityAdapter, EntityState } from "@reduxjs/toolkit";
-import { RootState } from "../../store/store";
+import { RootState } from "../../store";
 import apiSlice from "../api/apiSlice";
 import { QueryParams, User } from "../../types";
 import { FetchBaseQueryMeta } from "@reduxjs/toolkit/query";
-import { defaultPageSize } from "../../constants";
-import { getUrl } from "../../utils/apiUtils";
+import { defaultPageSize, HTTP_METHODS } from "../../constants";
+import { getUrl, populateTags } from "../../utils/apiUtils";
 
+const endpoint = "/users";
 const usersAdapter = createEntityAdapter<User>();
 const initialState = usersAdapter.getInitialState({
   pagination: {
@@ -26,23 +27,16 @@ export const transformResponse = (
   };
 };
 
-export const providesTags = (result: any) =>
-  result
-    ? [
-        ...result.ids.map((id: number) => ({ type: "Users" as const, id })),
-        { type: "Users", id: "PARTIAL-LIST" },
-      ]
-    : [{ type: "Users", id: "PARTIAL-LIST" }];
-
 const usersApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getUserById: builder.query<User, string>({
-      query: (id) => `/users/${id}`,
+      query: (id) => `${endpoint}/${id}`,
     }),
     getUsers: builder.query<EntityState<User, string>, QueryParams>({
       query: (queryParams: QueryParams) => getUrl(queryParams),
       transformResponse: (res: User[], meta) => transformResponse(res, meta),
       serializeQueryArgs: ({ endpointName }) => endpointName,
+      providesTags: (result) => populateTags(result, "Users"),
       forceRefetch({ currentArg, previousArg }) {
         return (
           currentArg?.page !== previousArg?.page ||
@@ -51,12 +45,11 @@ const usersApiSlice = apiSlice.injectEndpoints({
           currentArg?.columnFilters !== previousArg?.columnFilters
         );
       },
-      providesTags: (result) => providesTags(result),
     }),
     addUser: builder.mutation<User, User>({
       query: (body) => ({
-        url: `/users`,
-        method: "POST",
+        url: endpoint,
+        method: HTTP_METHODS.POST,
         body,
       }),
       invalidatesTags: ["Users"],
@@ -64,8 +57,8 @@ const usersApiSlice = apiSlice.injectEndpoints({
     updateUser: builder.mutation<User, User>({
       query: (payload: User) => {
         return {
-          url: `/users/${payload.id}`,
-          method: "PUT",
+          url: `${endpoint}/${payload.id}`,
+          method: HTTP_METHODS.PUT,
           body: payload,
         };
       },
@@ -76,8 +69,8 @@ const usersApiSlice = apiSlice.injectEndpoints({
     }),
     deleteUser: builder.mutation<void, string>({
       query: (id) => ({
-        url: `/users/${id}`,
-        method: "DELETE",
+        url: `${endpoint}/${id}`,
+        method: HTTP_METHODS.DELETE,
       }),
       invalidatesTags: (result, error, id) => [
         { type: "Users", id },

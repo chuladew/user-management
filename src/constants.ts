@@ -256,6 +256,7 @@ export const userColumnDefinitions: columnDefType[] = [
     filterFn: "contains",
     sortable: true,
     numeric: false,
+    enableColumnFilter: true,
   },
   {
     id: "lastName",
@@ -264,6 +265,7 @@ export const userColumnDefinitions: columnDefType[] = [
     filterVariant: "autocomplete",
     sortable: true,
     numeric: false,
+    enableColumnFilter: true,
   },
   {
     id: "age",
@@ -271,10 +273,15 @@ export const userColumnDefinitions: columnDefType[] = [
     accessorKey: "age",
     sortable: true,
     size: 120,
-    numeric: true,
-    filterVariant: "range",
-    filterFn: "between",
-    enableColumnFilter: false,
+    filterVariant: "range-slider",
+    filterFn: "betweenInclusive",
+    muiFilterSliderProps: {
+      marks: true,
+      max: 100,
+      min: 1,
+      step: 5,
+    },
+    enableColumnFilter: true,
   },
   {
     id: "gender",
@@ -284,7 +291,8 @@ export const userColumnDefinitions: columnDefType[] = [
     size: 150,
     numeric: false,
     filterVariant: "select",
-    enableColumnFilter: false,
+    filterSelectOptions: ["Male", "Female"],
+    enableColumnFilter: true,
   },
   {
     id: "email",
@@ -294,6 +302,7 @@ export const userColumnDefinitions: columnDefType[] = [
     sortable: true,
     size: 250,
     numeric: false,
+    enableColumnFilter: true,
   },
   {
     id: "country",
@@ -303,7 +312,19 @@ export const userColumnDefinitions: columnDefType[] = [
     numeric: false,
     filterVariant: "select",
     filterSelectOptions: countries,
+    enableColumnFilter: true,
   },
 ];
 
 export const defaultPageSize = 10;
+
+export const HTTP_METHODS = {
+  GET: "GET",
+  POST: "POST",
+  PUT: "PUT",
+  DELETE: "DELETE",
+};
+
+export const ENTITY_TAGS = {
+  USERS: "Users",
+};
