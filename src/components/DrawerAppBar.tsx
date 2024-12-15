@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -14,63 +14,66 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import ColorThemeSelector from "./ColorThemeSelector";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useTheme } from "@mui/material";
+import { NAV_ITEMS, ROUTES } from "../constants";
+import { ROUTE_OPT } from "../types";
 
 interface Props {
   window?: () => Window;
 }
 
 const drawerWidth = 240;
-const navItems = ["Home", "Users", "Analytics"];
 
 const DrawerAppBar = (props: Props) => {
-  const theme = useTheme();
   const { window } = props;
-  const [mobileOpen, setMobileOpen] = useState(false);
   const navigate = useNavigate();
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const location = useLocation();
+  const theme = useTheme();
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [selectedMenuId, setSelectedMenuId] = useState(-1);
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
 
-  const onClickNavItem = (navItem: string) => {
-    switch (navItem) {
-      case "Users":
-        navigate("/users");
-        setSelectedIndex(1);
+  const onClickNavItem = (navItem: ROUTE_OPT) => {
+    navigate(navItem.route);
+  };
+
+  useEffect(() => {
+    switch (location.pathname.toLowerCase()) {
+      case ROUTES.USERS:
+        setSelectedMenuId(NAV_ITEMS.users.id);
         break;
-      case "Analytics":
-        navigate("/analytics");
-        setSelectedIndex(2);
+      case ROUTES.ANALYTICS:
+        setSelectedMenuId(NAV_ITEMS.analytics.id);
         break;
       default:
-        navigate("/");
-        setSelectedIndex(3);
+        setSelectedMenuId(NAV_ITEMS.home.id);
     }
-  };
+  }, [location.pathname]);
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <Typography variant="h6" sx={{ my: 2 }}>
-        MUI
+        User Management
       </Typography>
       <Divider />
       <List>
-        {navItems.map((item, index) => (
-          <ListItem key={item} disablePadding>
+        {Object.values(NAV_ITEMS).map((item) => (
+          <ListItem key={item.id} disablePadding>
             <ListItemButton
               sx={{ textAlign: "center" }}
               onClick={(_) => onClickNavItem(item)}
               style={{
                 backgroundColor:
-                  selectedIndex === index
+                  selectedMenuId === item.id
                     ? theme.palette.action.selected
                     : undefined,
               }}
             >
-              <ListItemText primary={item} />
+              <ListItemText primary={item.label} />
             </ListItemButton>
           </ListItem>
         ))}
@@ -106,21 +109,21 @@ const DrawerAppBar = (props: Props) => {
             User Management
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            {navItems.map((item, index) => (
+            {Object.values(NAV_ITEMS).map((item: ROUTE_OPT) => (
               <Button
                 component={Link}
                 href="#"
-                key={item}
+                key={item.id}
                 sx={{ color: "#fff" }}
                 style={{
                   backgroundColor:
-                    selectedIndex === index
+                    selectedMenuId === item.id
                       ? theme.palette.action.selected
                       : undefined,
                 }}
                 onClick={(_) => onClickNavItem(item)}
               >
-                {item}
+                {item.label}
               </Button>
             ))}
           </Box>

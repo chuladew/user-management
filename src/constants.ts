@@ -328,3 +328,27 @@ export const HTTP_METHODS = {
 export const ENTITY_TAGS = {
   USERS: "Users",
 };
+
+export const ROUTES = {
+  HOME: "/",
+  USERS: "/users",
+  ANALYTICS: "/analytics",
+};
+
+export const NAV_ITEMS = {
+  home: {
+    id: 1,
+    label: "Home",
+    route: ROUTES.HOME,
+  },
+  users: {
+    id: 2,
+    label: "Users",
+    route: ROUTES.USERS,
+  },
+  analytics: {
+    id: 3,
+    label: "Analytics",
+    route: ROUTES.ANALYTICS,
+  },
+};

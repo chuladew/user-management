@@ -69,3 +69,9 @@ export interface User {
   email: string;
   country: string;
 }
+
+export type ROUTE_OPT = {
+  id: number;
+  label: string;
+  route: string;
+};
